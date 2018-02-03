@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Yun</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div id="affdex_elements" class="video"></div>
+
+        <div class="data">
+          <div class="tracking_results">
+            <h2>EMOTION TRACKING RESULTS</h2>
+            <div id="results"></div>
+          </div>
+          <div class="system_logs">
+            <h2>Tracking data</h2>
+            <ul>
+              <li id="gender"></li>
+            </ul>
+            <!-- <div id="logs"></div> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="start" onclick="onStart()">Start</button>
+        <button id="stop" onclick="onStop()">Stop</button>
+        <button id="reset" onclick="onReset()">Reset</button>
+      </div>
+    </div>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" charset="utf-8"></script>
+  <script src="https://download.affectiva.com/js/3.2/affdex.js" charset="utf-8"></script>
+  <script src="script.js" charset="utf-8"></script>
+</html>
