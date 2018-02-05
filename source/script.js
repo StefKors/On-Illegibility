@@ -137,10 +137,10 @@ function drawFeaturePoints(faces, img, featurePoints) {
   contxt.fillText(age, featurePoints[0].x-50, featurePoints[0].y-40);
   contxt.fillText(race, featurePoints[0].x-50, featurePoints[0].y-80);
 
-  contxt.beginPath();
-  contxt.arc(featurePoints[15].x-60, featurePoints[15].y, 300, 0, 300 * Math.PI);
-  contxt.lineWidth = 2;
-  contxt.stroke();
+  // contxt.beginPath();
+  // contxt.arc(featurePoints[15].x-60, featurePoints[15].y, 300, 0, 300 * Math.PI);
+  // contxt.lineWidth = 2;
+  // contxt.stroke();
 
 // points
   contxt.strokeStyle = "#FFFFFF";
