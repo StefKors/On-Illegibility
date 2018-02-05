@@ -4,7 +4,7 @@ var divRoot = $("#affdex_elements")[0];
 // var width = 640;
 // var height = 480;
 
-var height = document.documentElement.offsetHeight;
+var height = document.documentElement.offsetHeight*2;
 var width = height*1.333333333;
 var faceMode = affdex.FaceDetectorMode.LARGE_FACES;
 //Construct a CameraDetector and specify the image width / height and face detector mode.
@@ -37,6 +37,9 @@ function onStart() {
   log('#logs', "Clicked the start button");
 }
 
+$(window).ready(function () {
+  onStart();
+})
 //function executes when the Stop button is pushed.
 function onStop() {
   log('#logs', "Clicked the stop button");
@@ -111,25 +114,41 @@ function drawFeaturePoints(faces, img, featurePoints) {
 
 
   contxt.lineWidth=1;
-  contxt.fillStyle="#CC00FF";
-  contxt.lineStyle="#ffff00";
-  contxt.font="18px monospace";
+
+  var race = "Race: " + faces[0].appearance.ethnicity;
+  var age = "Age: " + faces[0].appearance.age;
+  var sex = "Sex: " + faces[0].appearance.gender;
+
+  var arr = [race, age, sex];
+
+  var longest = arr.reduce(function (a, b) { return a.length > b.length ? a : b; });
+  console.log(longest.length);
+
+// background
+  contxt.fillStyle="rgba(0,0,0,0.40)";
+  contxt.fillRect(featurePoints[0].x-35,featurePoints[0].y+20, -(longest.length*20+50), -140);
+
+// text
+  contxt.font="36px monospace";
   contxt.textAlign = 'right';
-  console.log(typeof faces[0].appearance.age);
-
-
   contxt.strokeStyle = "#FE5F41";
   contxt.fillStyle = "#FE5F41";
-  contxt.fillText("Age: " + faces[0].appearance.age, featurePoints[0].x-70, featurePoints[0].y);
-  contxt.fillText("Gender: " + faces[0].appearance.gender, featurePoints[0].x-70, featurePoints[0].y-20);
-  contxt.fillText("Ethnicity: " + faces[0].appearance.ethnicity, featurePoints[0].x-70, featurePoints[0].y-40);
+  contxt.fillText(sex, featurePoints[0].x-50, featurePoints[0].y);
+  contxt.fillText(age, featurePoints[0].x-50, featurePoints[0].y-40);
+  contxt.fillText(race, featurePoints[0].x-50, featurePoints[0].y-80);
 
+  contxt.beginPath();
+  contxt.arc(featurePoints[15].x-60, featurePoints[15].y, 300, 0, 300 * Math.PI);
+  contxt.lineWidth = 2;
+  contxt.stroke();
+
+// points
   contxt.strokeStyle = "#FFFFFF";
   contxt.fillStyle = "#FFFFFF";
   for (var id in featurePoints) {
     contxt.beginPath();
     contxt.arc(featurePoints[id].x,
-      featurePoints[id].y, 2, 0, 2 * Math.PI);
+      featurePoints[id].y, 4, 0, 4 * Math.PI);
     contxt.stroke();
     contxt.fill();
 
