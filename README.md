@@ -1,4 +1,4 @@
-#running this locally
+# running this locally
 
 1) open the terminal and `cd` to a folder where you want to download the files
 2) run `git clone https://github.com/StefKors/Yun-Sonic-Acts.git`
