@@ -3,7 +3,7 @@
 var divRoot = $("#affdex_elements")[0];
 var width = 640;
 var height = 480;
-
+var notPaused = true;
 // var width = 1280;
 // var height = 960;
 
@@ -64,6 +64,16 @@ function onReset() {
   }
 };
 
+
+
+function onPause() {
+  if (detector && detector.isRunning && notPaused) {
+    notPaused = false;
+  } else {
+    notPaused = true;
+  }
+};
+
 //Add a callback to notify when camera access is allowed
 detector.addEventListener("onWebcamConnectSuccess", function() {
   log('#logs', "Webcam access allowed");
@@ -121,40 +131,79 @@ function drawFeaturePoints(faces, img, featurePoints) {
 
   contxt.lineWidth=1;
 
-  var race = "Race: " + faces[0].appearance.ethnicity;
-  var age = "Age: " + faces[0].appearance.age;
-  var sex = "Sex: " + faces[0].appearance.gender;
+  var race = "RACE: " + faces[0].appearance.ethnicity;
+  var age = "AGE: " + faces[0].appearance.age;
+  var sex = "SEX: " + faces[0].appearance.gender;
 
   var arr = [race, age, sex];
 
   var longest = arr.reduce(function (a, b) { return a.length > b.length ? a : b; });
-  console.log(longest.length);
+  // console.log(longest.length);
 
 // background
-  contxt.fillStyle="rgba(105,176,219,0.40)";
-  contxt.fillRect(featurePoints[0].x-40,featurePoints[0].y+10, -(longest.length*10), -70);
 
-// text
-  contxt.font="16px sans-serif";
-  contxt.textAlign = 'right';
-  contxt.strokeStyle = "#FFF";
-  contxt.fillStyle = "#FFF";
-  contxt.fillText(sex, featurePoints[0].x-50, featurePoints[0].y);
-  contxt.fillText(age, featurePoints[0].x-50, featurePoints[0].y-20);
-  contxt.fillText(race, featurePoints[0].x-50, featurePoints[0].y-40);
+
+  if (notPaused) {
+    contxt.fillStyle="rgba(105,176,219,0.40)";
+    contxt.fillRect(featurePoints[0].x-40,featurePoints[0].y+10, -(longest.length*11), -70);
+
+    // text
+    contxt.font="16px Menlo";
+    contxt.textAlign = 'right';
+    contxt.strokeStyle = "#FFF";
+    contxt.fillStyle = "#FFF";
+
+    contxt.fillText(sex.toUpperCase(), featurePoints[0].x-50, featurePoints[0].y);
+    contxt.fillText(age.toUpperCase(), featurePoints[0].x-50, featurePoints[0].y-20);
+    contxt.fillText(race.toUpperCase(), featurePoints[0].x-50, featurePoints[0].y-40);
+
+    // points
+      contxt.fillStyle = "#FFFFFF";
+      for (var id in featurePoints) {
+        contxt.beginPath();
+        contxt.arc(featurePoints[id].x,
+          featurePoints[id].y, 2, 0, 2 * Math.PI);
+        contxt.fill();
+
+      }
+    } else {
+      // remove from canvas
+      context.clearRect(0,0, width, height);
+    }
+  }
+
 
   // contxt.beginPath();
   // contxt.arc(featurePoints[15].x-60, featurePoints[15].y, 300, 0, 300 * Math.PI);
   // contxt.lineWidth = 2;
   // contxt.stroke();
 
-// points
-  contxt.fillStyle = "#FFFFFF";
-  for (var id in featurePoints) {
-    contxt.beginPath();
-    contxt.arc(featurePoints[id].x,
-      featurePoints[id].y, 2, 0, 2 * Math.PI);
-    contxt.fill();
 
-  }
-}
+// //Draw the detected facial feature points on the image
+// function drawFeaturePoints(featurePoints) {
+//   $('#box').css('top', featurePoints[0].y - 120);
+//   $('#box').css('left', featurePoints[0].x - 200);
+//
+//
+//   if ($('#face_dots').hasClass('dots')) {
+//     var dot = document.getElementsByClassName('dot');
+//     for (var id in featurePoints) {
+//       dot[id].style.left = featurePoints[id].x + 'px';
+//       dot[id].style.top = featurePoints[id].y + 'px';
+//     }
+//   } else {
+//     console.log('false');
+//     $('#face_dots').addClass('dots');
+//
+//     for (var id in featurePoints) {
+//       var div = document.createElement("div");
+//       div.setAttribute("class", "dot");
+//       div.setAttribute("id", "dot"+id);
+//       document.getElementById("face_dots").appendChild(div);
+//
+//       div.style.position = "fixed";
+//       div.style.left = featurePoints[id].x+'px';
+//       div.style.top = featurePoints[id].y+'px';
+//     }
+//   }
+// }

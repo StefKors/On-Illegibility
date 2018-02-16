@@ -237,8 +237,10 @@ affdex.CameraDetector = function(element, imgW, imgH, faceMode) {
   var self = this;
   affdex.Detector.call(self);
   var cameraStream = null;
-  var width = imgW || 640;
-  var height = imgH || 480;
+  // var width = imgW || 640;
+  // var height = imgH || 480;
+  var width = imgW || 1280;
+  var height = imgH || 960;
   var startTimeStamp = (new Date()).getTime() / 1000;
   var docElement = element || document.createElement("div");
   var canvasElement = null;
