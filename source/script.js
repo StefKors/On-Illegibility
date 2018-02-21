@@ -160,10 +160,8 @@ function drawFeaturePoints(faces, img, featurePoints) {
     // points
       contxt.fillStyle = "#FFFFFF";
       for (var id in featurePoints) {
-        contxt.beginPath();
-        contxt.arc(featurePoints[id].x,
-          featurePoints[id].y, 2, 0, 2 * Math.PI);
-        contxt.fill();
+        contxt.fillRect(featurePoints[id].x,
+          featurePoints[id].y, 3, 3);
 
       }
     } else {
