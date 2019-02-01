@@ -1,3 +1,27 @@
+$(window).ready(function() {
+  console.log('ready')
+
+  $('#start').click(function() {
+    onStart();
+    console.log('click')
+  })
+
+  $('#stop').click(function() {
+    onStop();
+    console.log('click')
+  })
+
+  $('#reset').click(function() {
+    onReset();
+    console.log('click')
+  })
+
+  $('#pause').click(function() {
+    onPause();
+    console.log('click')
+  })
+
+
 // SDK Needs to create video and canvas nodes in the DOM in order to function
 // Here we are adding those nodes a predefined div.
 var divRoot = $("#affdex_elements")[0];
@@ -205,3 +229,7 @@ function drawFeaturePoints(faces, img, featurePoints) {
 //     }
 //   }
 // }
+
+
+
+})
