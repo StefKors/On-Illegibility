@@ -8,7 +8,7 @@
   "devDependencies": {
     "browser-sync": "2.26.3",
     "gulp": "3.9.1",
-    "gulp-connect-php": "1.0.1"
+    "gulp-connect-php": "1.0.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
