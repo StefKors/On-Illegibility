@@ -1,6 +1,8 @@
 @font-face {
   font-family: 'Menlo';
-  src: url('Menlo.ttc');
+  font-style: normal;
+  font-weight: normal;
+  src: local('Menlo Regular'), url('Menlo-Regular.woff') format('woff');
 }
 
 body {
