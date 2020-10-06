@@ -21,15 +21,18 @@ $(window).ready(function() {
     console.log('click')
   })
 
+  $('#toggle').click(function() {
+    $('#affdex_elements').toggle()
+  })
 
 // SDK Needs to create video and canvas nodes in the DOM in order to function
 // Here we are adding those nodes a predefined div.
 var divRoot = $("#affdex_elements")[0];
-var width = 640;
-var height = 480;
+// var width = 640;
+// var height = 480;
 var notPaused = true;
-// var width = 1280;
-// var height = 960;
+var width = 1280;
+var height = 960;
 
 
 // var height = document.documentElement.offsetHeight;
@@ -139,13 +142,21 @@ detector.addEventListener("onImageResultsSuccess", function(faces, image, timest
   $('#results').html("");
   if (faces.length > 0) {
     $('#gender').html(JSON.stringify(faces[0].appearance.gender));
-    drawFeaturePoints(faces, image, faces[0].featurePoints);
+    drawFeaturePoints($('#face_dots')[0], faces, image, faces[0].featurePoints);
   }
 });
 
 //Draw the detected facial feature points on the image
-function drawFeaturePoints(faces, img, featurePoints) {
-  var contxt = $('#face_video_canvas')[0].getContext('2d');
+function drawFeaturePoints(el, faces, img, featurePoints) {
+  const PointSettings = {
+    size: 3,
+    fill: '#FFF'
+  }
+
+  var contxt = el.getContext('2d');
+  contxt.clearRect(0,0, width, height);
+  contxt.fillStyle="black";
+  contxt.fillRect(0, 0, contxt.canvas.width, contxt.canvas.height);
 
   var hRatio = contxt.canvas.width / img.width;
   var vRatio = contxt.canvas.height / img.height;
@@ -185,13 +196,14 @@ function drawFeaturePoints(faces, img, featurePoints) {
       contxt.fillStyle = "#FFFFFF";
       for (var id in featurePoints) {
         contxt.fillRect(featurePoints[id].x,
-          featurePoints[id].y, 3, 3);
+          featurePoints[id].y, PointSettings.size, PointSettings.size);
 
       }
     } else {
       // remove from canvas
-      context.clearRect(0,0, width, height);
+      contxt.clearRect(0,0, width, height);
     }
+
   }
 
 
