@@ -155,7 +155,7 @@ function drawFeaturePoints(el, faces, img, featurePoints) {
 
   var contxt = el.getContext('2d');
   contxt.clearRect(0,0, width, height);
-  contxt.fillStyle="black";
+  contxt.fillStyle="green";
   contxt.fillRect(0, 0, contxt.canvas.width, contxt.canvas.height);
 
   var hRatio = contxt.canvas.width / img.width;
@@ -179,7 +179,7 @@ function drawFeaturePoints(el, faces, img, featurePoints) {
 
 
   if (notPaused) {
-    contxt.fillStyle="rgba(105,176,219,0.40)";
+    contxt.fillStyle="rgba(105,176,219,1)";
     contxt.fillRect(featurePoints[0].x-40,featurePoints[0].y+10, -(longest.length*11), -70);
 
     // text
