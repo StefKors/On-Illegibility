@@ -155,8 +155,8 @@ function drawFeaturePoints(el, faces, img, featurePoints) {
 
   var contxt = el.getContext('2d');
   contxt.clearRect(0,0, width, height);
-  contxt.fillStyle="black";
-  contxt.fillRect(0, 0, contxt.canvas.width, contxt.canvas.height);
+  // contxt.fillStyle="transparent";
+  // contxt.fillRect(0, 0, contxt.canvas.width, contxt.canvas.height);
 
   var hRatio = contxt.canvas.width / img.width;
   var vRatio = contxt.canvas.height / img.height;

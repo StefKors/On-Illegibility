@@ -152,3 +152,12 @@ button {
   border: 0;
   font-family: 'Menlo';
 }
+
+#face_dots {
+  position: absolute;
+  top: 0;
+  /* width: 1280px;
+  height: 960px; 
+  display: block; */
+  border: 2px solid;
+}
