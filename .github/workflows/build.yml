@@ -31,6 +31,7 @@ jobs:
   release:
     if: github.event.action != 'labeled'
     runs-on: ${{ matrix.os }}
+    needs: bump
 
     strategy:
       matrix:
