@@ -1,6 +1,7 @@
 console.log(window.navigator)
 console.log(window.navigator.mediaDevices);
 console.log(navigator.mediaDevices);
+// tauri fails with this
 // window.__TAURI__.notification.requestPermission()
 //   .then(response => {
 //     if (response === 'granted') {
