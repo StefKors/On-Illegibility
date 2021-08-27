@@ -5,6 +5,7 @@ on: push
 jobs:
   bump:
     runs-on: ubuntu-latest
+    steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
       # Bump version on merging Pull Requests with specific labels.
