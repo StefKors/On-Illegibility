@@ -1,3 +1,14 @@
+// console.log(window.navigator)
+// console.log(window.navigator.mediaDevices);
+// console.log(navigator.mediaDevices);
+// tauri fails with this
+// window.notification.requestPermission()
+//   .then(response => {
+//     if (response === 'granted') {
+//       new Notification('title', { body: 'some text' })
+//     }
+//   })
+
 $(window).ready(function() {
   console.log('ready')
 
@@ -27,13 +38,15 @@ $(window).ready(function() {
 
 // SDK Needs to create video and canvas nodes in the DOM in order to function
 // Here we are adding those nodes a predefined div.
-var divRoot = $("#affdex_elements")[0];
+var divRoot = document.querySelector("#affdex_elements")
 // var width = 640;
 // var height = 480;
 var notPaused = true;
 var width = 1280;
 var height = 960;
 
+
+console.log(divRoot);
 
 // var height = document.documentElement.offsetHeight;
 // var width = height*1.333333333;

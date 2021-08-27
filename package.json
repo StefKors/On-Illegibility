@@ -1,26 +1,15 @@
 {
-  "name": "yun-sonic-acts",
+  "name": "On-Illegibility",
   "version": "1.0.0",
-  "description": "1) open the terminal and `cd` to a folder where you want to download the files 2) run `git clone https://github.com/StefKors/Yun-Sonic-Acts.git` or download from here https://github.com/StefKors/Yun-Sonic-Acts/archive/master.zip 3) run `cd Yun-Sonic-Acts` 4) run `gulp`",
-  "main": "gulpfile.js",
-  "devDependencies": {
-    "browser-sync": "2.26.12",
-    "gulp": "4.0.2",
-    "gulp-cli": "^2.3.0",
-    "gulp-connect-php": "1.0.3"
-  },
+  "main": "main.js",
+  "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "gulp serve"
+    "start": "electron ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/StefKors/Yun-Sonic-Acts.git"
-  },
-  "author": "Stef Kors",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/StefKors/Yun-Sonic-Acts/issues"
-  },
-  "homepage": "https://github.com/StefKors/Yun-Sonic-Acts#readme"
+  "devDependencies": {
+    "electron": "^13.2.2",
+    "electron-builder": "^22.11.7",
+    "electron-reloader": "^1.2.1",
+    "electron-serve": "^1.1.0"
+  }
 }

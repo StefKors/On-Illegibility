@@ -1,7 +1,7 @@
 "use strict";
 //Global namespace
 var affdex = affdex || {};
-affdex.version="3.2.583-b86b1d2"
+affdex.version="3.2.1.583-b86b1d2"
 affdex.getAffdexDotJsLocation = function() {
   var scripts = document.getElementsByTagName('script');
   var affdexJS = null;
@@ -237,10 +237,8 @@ affdex.CameraDetector = function(element, imgW, imgH, faceMode) {
   var self = this;
   affdex.Detector.call(self);
   var cameraStream = null;
-  // var width = imgW || 640;
-  // var height = imgH || 480;
-  var width = imgW || 1280;
-  var height = imgH || 960;
+  var width = imgW || 640;
+  var height = imgH || 480;
   var startTimeStamp = (new Date()).getTime() / 1000;
   var docElement = element || document.createElement("div");
   var canvasElement = null;
@@ -299,7 +297,7 @@ affdex.CameraDetector = function(element, imgW, imgH, faceMode) {
     };
 
     self.videoElement.addEventListener("playing", playingFn);
-    self.videoElement.src = window.URL.createObjectURL(stream);
+    self.videoElement.srcObject = stream;
 
     self.getCallback("onWebcamConnect", true)();
   };
@@ -326,7 +324,7 @@ affdex.CameraDetector = function(element, imgW, imgH, faceMode) {
   };
 
   self._startCamera = function() {
-    navigator.mediaDevices.getUserMedia({
+    window.navigator.mediaDevices.getUserMedia({
       video: true,
       audio: false
     }).then(self.onWebcamReady).catch(self.getCallback("onWebcamConnect", false));
