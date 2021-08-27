@@ -1,8 +1,8 @@
-console.log(window.navigator)
-console.log(window.navigator.mediaDevices);
-console.log(navigator.mediaDevices);
+// console.log(window.navigator)
+// console.log(window.navigator.mediaDevices);
+// console.log(navigator.mediaDevices);
 // tauri fails with this
-// window.__TAURI__.notification.requestPermission()
+// window.notification.requestPermission()
 //   .then(response => {
 //     if (response === 'granted') {
 //       new Notification('title', { body: 'some text' })
