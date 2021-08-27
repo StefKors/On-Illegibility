@@ -8,6 +8,7 @@ on:
 
 jobs:
   bump:
+    if: github.event.action != 'labeled'
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
@@ -28,6 +29,7 @@ jobs:
           tag: ${{ steps.bumpr.outputs.next_version }}
 
   release:
+    if: github.event.action != 'labeled'
     runs-on: ${{ matrix.os }}
 
     strategy:
