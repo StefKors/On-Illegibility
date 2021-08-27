@@ -4,15 +4,13 @@
   "description": "1) open the terminal and `cd` to a folder where you want to download the files 2) run `git clone https://github.com/StefKors/Yun-Sonic-Acts.git` or download from here https://github.com/StefKors/Yun-Sonic-Acts/archive/master.zip 3) run `cd Yun-Sonic-Acts` 4) run `gulp`",
   "main": "gulpfile.js",
   "devDependencies": {
-    "@tauri-apps/cli": "*",
-    "browser-sync": "2.26.12",
-    "gulp": "4.0.2",
-    "gulp-cli": "^2.3.0",
-    "gulp-connect-php": "1.0.3"
+    "@tauri-apps/cli": "*"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "gulp",
+    "start": "http-server ./source -p 8080 -c-1",
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "build:debug": "npm run tauri build -- --debug",
     "tauri": "tauri"
   },
   "repository": {
@@ -26,6 +24,7 @@
   },
   "homepage": "https://github.com/StefKors/Yun-Sonic-Acts#readme",
   "dependencies": {
-    "@tauri-apps/api": "*"
+    "@tauri-apps/api": "*",
+    "http-server": "^13.0.1"
   }
 }

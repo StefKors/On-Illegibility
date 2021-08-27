@@ -1,13 +1,14 @@
 {
   "package": {
-    "productName": "yun-sonic-acts",
+    "productName": "On Illegibility",
     "version": "0.1.0"
   },
   "build": {
-    "distDir": "./source/",
-    "devPath": "8010",
-    "beforeDevCommand": "",
-    "beforeBuildCommand": ""
+    "distDir": "../source",
+    "devPath": "http://localhost:8080",
+    "beforeDevCommand": "npm start",
+    "beforeBuildCommand": "",
+    "withGlobalTauri": true
   },
   "tauri": {
     "bundle": {
@@ -21,7 +22,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "resources": [],
+      "resources": ["../source/lib/*"],
       "externalBin": [],
       "copyright": "",
       "category": "DeveloperTool",
@@ -49,7 +50,14 @@
       "active": false
     },
     "allowlist": {
-      "all": true
+      "all": true,
+      "notification": {
+        "all": true
+      },
+      "window": {
+        "all": true,
+        "create": true
+      }
     },
     "windows": [
       {

@@ -946,12 +946,12 @@ module.exports = function() {
 
       if ((face && (face.exact === 'user' || face.exact === 'environment' ||
                     face.ideal === 'user' || face.ideal === 'environment')) &&
-          !(navigator.mediaDevices.getSupportedConstraints &&
-            navigator.mediaDevices.getSupportedConstraints().facingMode)) {
+          !(window.navigator.mediaDevices.getSupportedConstraints &&
+            window.navigator.mediaDevices.getSupportedConstraints().facingMode)) {
         delete constraints.video.facingMode;
         if (face.exact === 'environment' || face.ideal === 'environment') {
           // Look for "back" in label, or use last cam (typically back cam).
-          return navigator.mediaDevices.enumerateDevices()
+          return window.navigator.mediaDevices.enumerateDevices()
           .then(function(devices) {
             devices = devices.filter(function(d) {
               return d.kind === 'videoinput';
@@ -991,23 +991,23 @@ module.exports = function() {
 
   var getUserMedia_ = function(constraints, onSuccess, onError) {
     shimConstraints_(constraints, function(c) {
-      navigator.webkitGetUserMedia(c, onSuccess, function(e) {
+      window.navigator.webkitGetUserMedia(c, onSuccess, function(e) {
         onError(shimError_(e));
       });
     });
   };
 
-  navigator.getUserMedia = getUserMedia_;
+  window.navigator.getUserMedia = getUserMedia_;
 
   // Returns the result of getUserMedia as a Promise.
   var getUserMediaPromise_ = function(constraints) {
     return new Promise(function(resolve, reject) {
-      navigator.getUserMedia(constraints, resolve, reject);
+      window.navigator.getUserMedia(constraints, resolve, reject);
     });
   };
 
-  if (!navigator.mediaDevices) {
-    navigator.mediaDevices = {
+  if (!window.navigator.mediaDevices) {
+    window.navigator.mediaDevices = {
       getUserMedia: getUserMediaPromise_,
       enumerateDevices: function() {
         return new Promise(function(resolve) {
@@ -1027,17 +1027,17 @@ module.exports = function() {
 
   // A shim for getUserMedia method on the mediaDevices object.
   // TODO(KaptenJansson) remove once implemented in Chrome stable.
-  if (!navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices.getUserMedia = function(constraints) {
+  if (!window.navigator.mediaDevices.getUserMedia) {
+    window.navigator.mediaDevices.getUserMedia = function(constraints) {
       return getUserMediaPromise_(constraints);
     };
   } else {
-    // Even though Chrome 45 has navigator.mediaDevices and a getUserMedia
+    // Even though Chrome 45 has window.navigator.mediaDevices and a getUserMedia
     // function which returns a Promise, it does not accept spec-style
     // constraints.
-    var origGetUserMedia = navigator.mediaDevices.getUserMedia.
-        bind(navigator.mediaDevices);
-    navigator.mediaDevices.getUserMedia = function(cs) {
+    var origGetUserMedia = window.navigator.mediaDevices.getUserMedia.
+        bind(window.navigator.mediaDevices);
+    window.navigator.mediaDevices.getUserMedia = function(cs) {
       return shimConstraints_(cs, function(c) {
         return origGetUserMedia(c).catch(function(e) {
           return Promise.reject(shimError_(e));
@@ -1048,13 +1048,13 @@ module.exports = function() {
 
   // Dummy devicechange event methods.
   // TODO(KaptenJansson) remove once implemented in Chrome stable.
-  if (typeof navigator.mediaDevices.addEventListener === 'undefined') {
-    navigator.mediaDevices.addEventListener = function() {
+  if (typeof window.navigator.mediaDevices.addEventListener === 'undefined') {
+    window.navigator.mediaDevices.addEventListener = function() {
       logging('Dummy mediaDevices.addEventListener called.');
     };
   }
-  if (typeof navigator.mediaDevices.removeEventListener === 'undefined') {
-    navigator.mediaDevices.removeEventListener = function() {
+  if (typeof window.navigator.mediaDevices.removeEventListener === 'undefined') {
+    window.navigator.mediaDevices.removeEventListener = function() {
       logging('Dummy mediaDevices.removeEventListener called.');
     };
   }
@@ -2136,9 +2136,9 @@ module.exports = function() {
   };
 
   // getUserMedia error shim.
-  var origGetUserMedia = navigator.mediaDevices.getUserMedia.
-      bind(navigator.mediaDevices);
-  navigator.mediaDevices.getUserMedia = function(c) {
+  var origGetUserMedia = window.navigator.mediaDevices.getUserMedia.
+      bind(window.navigator.mediaDevices);
+  window.navigator.mediaDevices.getUserMedia = function(c) {
     return origGetUserMedia(c).catch(function(e) {
       return Promise.reject(shimError_(e));
     });
@@ -2405,7 +2405,7 @@ module.exports = function() {
       }
       logging('ff37: ' + JSON.stringify(constraints));
     }
-    return navigator.mozGetUserMedia(constraints, onSuccess, function(e) {
+    return window.navigator.mozGetUserMedia(constraints, onSuccess, function(e) {
       onError(shimError_(e));
     });
   };
@@ -2418,14 +2418,14 @@ module.exports = function() {
   };
 
   // Shim for mediaDevices on older versions.
-  if (!navigator.mediaDevices) {
-    navigator.mediaDevices = {getUserMedia: getUserMediaPromise_,
+  if (!window.navigator.mediaDevices) {
+    window.navigator.mediaDevices = {getUserMedia: getUserMediaPromise_,
       addEventListener: function() { },
       removeEventListener: function() { }
     };
   }
-  navigator.mediaDevices.enumerateDevices =
-      navigator.mediaDevices.enumerateDevices || function() {
+  window.navigator.mediaDevices.enumerateDevices =
+      window.navigator.mediaDevices.enumerateDevices || function() {
         return new Promise(function(resolve) {
           var infos = [
             {kind: 'audioinput', deviceId: 'default', label: '', groupId: ''},
@@ -2438,8 +2438,8 @@ module.exports = function() {
   if (browserDetails.version < 41) {
     // Work around http://bugzil.la/1169665
     var orgEnumerateDevices =
-        navigator.mediaDevices.enumerateDevices.bind(navigator.mediaDevices);
-    navigator.mediaDevices.enumerateDevices = function() {
+        window.navigator.mediaDevices.enumerateDevices.bind(window.navigator.mediaDevices);
+    window.navigator.mediaDevices.enumerateDevices = function() {
       return orgEnumerateDevices().then(undefined, function(e) {
         if (e.name === 'NotFoundError') {
           return [];
@@ -2449,22 +2449,22 @@ module.exports = function() {
     };
   }
   if (browserDetails.version < 49) {
-    var origGetUserMedia = navigator.mediaDevices.getUserMedia.
-        bind(navigator.mediaDevices);
-    navigator.mediaDevices.getUserMedia = function(c) {
+    var origGetUserMedia = window.navigator.mediaDevices.getUserMedia.
+        bind(window.navigator.mediaDevices);
+    window.navigator.mediaDevices.getUserMedia = function(c) {
       return origGetUserMedia(c).catch(function(e) {
         return Promise.reject(shimError_(e));
       });
     };
   }
-  navigator.getUserMedia = function(constraints, onSuccess, onError) {
+  window.navigator.getUserMedia = function(constraints, onSuccess, onError) {
     if (browserDetails.version < 44) {
       return getUserMedia_(constraints, onSuccess, onError);
     }
     // Replace Firefox 44+'s deprecation warning with unprefixed version.
-    console.warn('navigator.getUserMedia has been replaced by ' +
-                 'navigator.mediaDevices.getUserMedia');
-    navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
+    console.warn('window.navigator.getUserMedia has been replaced by ' +
+                 'window.navigator.mediaDevices.getUserMedia');
+    window.navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
   };
 };
 
@@ -2490,7 +2490,7 @@ var safariShim = {
   // shimPeerConnection: function() { },
 
   shimGetUserMedia: function() {
-    navigator.getUserMedia = navigator.webkitGetUserMedia;
+    window.navigator.getUserMedia = window.navigator.webkitGetUserMedia;
   }
 };
 
@@ -2567,24 +2567,24 @@ var utils = {
     result.minVersion = null;
 
     // Fail early if it's not a browser
-    if (typeof window === 'undefined' || !window.navigator) {
+    if (typeof window === 'undefined' || !window.window.navigator) {
       result.browser = 'Not a browser.';
       return result;
     }
 
     // Firefox.
-    if (navigator.mozGetUserMedia) {
+    if (window.navigator.mozGetUserMedia) {
       result.browser = 'firefox';
-      result.version = this.extractVersion(navigator.userAgent,
+      result.version = this.extractVersion(window.navigator.userAgent,
           /Firefox\/([0-9]+)\./, 1);
       result.minVersion = 31;
 
     // all webkit-based browsers
-    } else if (navigator.webkitGetUserMedia) {
+    } else if (window.navigator.webkitGetUserMedia) {
       // Chrome, Chromium, Webview, Opera, all use the chrome shim for now
       if (window.webkitRTCPeerConnection) {
         result.browser = 'chrome';
-        result.version = this.extractVersion(navigator.userAgent,
+        result.version = this.extractVersion(window.navigator.userAgent,
           /Chrom(e|ium)\/([0-9]+)\./, 2);
         result.minVersion = 38;
 
@@ -2602,9 +2602,9 @@ var utils = {
         // only the internal webkit version is important today to know if
         // media streams are supported
         //
-        if (navigator.userAgent.match(/Version\/(\d+).(\d+)/)) {
+        if (window.navigator.userAgent.match(/Version\/(\d+).(\d+)/)) {
           result.browser = 'safari';
-          result.version = this.extractVersion(navigator.userAgent,
+          result.version = this.extractVersion(window.navigator.userAgent,
             /AppleWebKit\/([0-9]+)\./, 1);
           result.minVersion = 602;
 
@@ -2617,10 +2617,10 @@ var utils = {
       }
 
     // Edge.
-    } else if (navigator.mediaDevices &&
-        navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)) {
+    } else if (window.navigator.mediaDevices &&
+        window.navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)) {
       result.browser = 'edge';
-      result.version = this.extractVersion(navigator.userAgent,
+      result.version = this.extractVersion(window.navigator.userAgent,
           /Edge\/(\d+).(\d+)$/, 2);
       result.minVersion = 10547;
 
