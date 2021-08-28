@@ -10,8 +10,6 @@ jobs:
 
   build:
     runs-on: ${{ matrix.os }}
-    needs: bump
-
     strategy:
       matrix:
         # os: [macos-latest, ubuntu-latest, windows-latest]
