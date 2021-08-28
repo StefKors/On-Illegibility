@@ -3,13 +3,37 @@
   "version": "1.0.0",
   "main": "main.js",
   "license": "MIT",
+  "postinstall": "electron-builder install-app-deps",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "devDependencies": {
     "electron": "^13.2.2",
     "electron-builder": "^22.11.7",
-    "electron-reloader": "^1.2.1",
+    "electron-reloader": "^1.2.1"
+  },
+  "dependencies": {
     "electron-serve": "^1.1.0"
-  }
+  },
+  "build": {
+		"appId": "com.stefkors.on-illegibility",
+		"mac": {
+			"target": [
+				"dmg"
+			],
+			"category": "public.app-category.lifestyle",
+			"darkModeSupport": true,
+			"entitlements": "./build/entitlements.mac.plist",
+			"entitlementsInherit": "./build/entitlements.mac.plist",
+			"hardenedRuntime": false
+		},
+		"linux": {
+			"category": "Utility"
+		},
+		"dmg": {
+			"icon": false
+		}
+	}
 }
