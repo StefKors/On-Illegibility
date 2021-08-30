@@ -20,7 +20,6 @@ jobs:
         uses: juliansangillo/tag-version@v1  
         with:  
             production-branch: master
-
   build:
     runs-on: macos-latest
     needs: [tag]
