@@ -26,14 +26,9 @@ jobs:
         run: npx electron-builder install-app-deps
       - name: Build App
         run: yarn build:universal
-
-  release:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Update release
-        uses: johnwbyrd/update-release@v1
-        with:
-          token: ${{ secrets.github_token }}
-          files: ./dist/mac-universal/On-Illegibility.app
+      - name: Release
+        uses: fnkr/github-action-ghr@v1
+        env:
+          GHR_COMPRESS: xz
+          GHR_PATH: dist/
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
