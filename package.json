@@ -1,6 +1,6 @@
 {
   "name": "On-Illegibility",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "main": "main.js",
   "license": "MIT",
   "preinstall": "electron-builder install-app-deps",
