@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "main.js",
   "license": "MIT",
-  "postinstall": "electron-builder install-app-deps",
+  "preinstall": "electron-builder install-app-deps",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
