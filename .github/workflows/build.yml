@@ -1,10 +1,10 @@
 name: CI
 
-on: push
-  # push:
-  #   branches:
-  #     - main
-  #     - master
+on:
+  push:
+    branches:
+      - main
+      - master
 
 jobs:
 
@@ -13,19 +13,21 @@ jobs:
     steps:
       - name: Checkout  
         uses: actions/checkout@v2  
-        with:  
-            fetch-depth: 0  
-      - name: Version  
-        id: version  
-        uses: juliansangillo/tag-version@v1  
-        with:  
-            production-branch: master
+      - name:  'Automated Version Bump'
+        uses:  'phips28/gh-action-bump-version@master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag-prefix:  'v'
+
   build:
     runs-on: macos-latest
     needs: [tag]
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
+      - name: Pull version bump
+        run: git pull
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -53,7 +55,7 @@ jobs:
           # GitHub token, automatically provided to the action
           # (No need to define this secret in the repo settings)
           github_token: ${{ secrets.github_token }}
-
+          args: --universal -c.mac.identity=null --publish=always
           # If the commit is tagged with a version (e.g. "v1.0.0"),
           # release the app after building
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
