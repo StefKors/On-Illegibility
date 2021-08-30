@@ -26,7 +26,7 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: yarn.lock
       - name: Build App
-        run: yarn dist:universal
+        run: yarn build:universal
 
   release:
     runs-on: ubuntu-latest
@@ -37,4 +37,4 @@ jobs:
         uses: johnwbyrd/update-release@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          files: ./one-file-you-want-to-release.zip dist/another-file-to-release.exe
+          files: ./dist/mac-universal/On-Illegibility.app
