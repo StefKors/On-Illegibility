@@ -40,5 +40,5 @@ jobs:
       - name: Update release
         uses: johnwbyrd/update-release@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.github_token }}
           files: ./dist/mac-universal/On-Illegibility.app
