@@ -9,12 +9,7 @@ on: push
 jobs:
 
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        # os: [macos-latest, ubuntu-latest, windows-latest]
-        os: [macos-latest]
-
+    runs-on: macos-latest
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
