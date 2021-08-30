@@ -9,13 +9,11 @@
     "pack": "electron-builder --dir",
     "build:universal": "electron-builder --universal"
   },
-  "devDependencies": {
+  "dependencies": {
+    "electron-serve": "^1.1.0",
     "electron": "^13.2.2",
     "electron-builder": "^22.11.7",
     "electron-reloader": "^1.2.1"
-  },
-  "dependencies": {
-    "electron-serve": "^1.1.0"
   },
   "build": {
 		"appId": "com.stefkors.on-illegibility",
