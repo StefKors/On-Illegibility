@@ -1,15 +1,19 @@
-// console.log(window.navigator)
-// console.log(window.navigator.mediaDevices);
-// console.log(navigator.mediaDevices);
-// tauri fails with this
-// window.notification.requestPermission()
-//   .then(response => {
-//     if (response === 'granted') {
-//       new Notification('title', { body: 'some text' })
-//     }
-//   })
+$(window).resize(function() {
+  location.reload()
+})
 
 $(window).ready(function() {
+  // var width = window.innerWidth;
+  var width = window.innerWidth;
+  var height = width/1.333333333;
+  // document.querySelector("#face_video")?.setAttribute("width", width)
+  // document.querySelector("#face_video")?.setAttribute("height", height)
+  document.querySelector("#affdex_elements").setAttribute("width", width)
+  document.querySelector("#affdex_elements").setAttribute("height", height)
+  document.querySelector("#face_dots").setAttribute("width", width)
+  document.querySelector("#face_dots").setAttribute("height", height)
+  let el = $('#face_dots')[0]
+  let contxt = el.getContext('2d');
   console.log('ready')
 
   $('#start').click(function() {
@@ -42,18 +46,25 @@ var divRoot = document.querySelector("#affdex_elements")
 // var width = 640;
 // var height = 480;
 var notPaused = true;
-var width = 1280;
-var height = 960;
-
-
-console.log(divRoot);
-
-// var height = document.documentElement.offsetHeight;
-// var width = height*1.333333333;
+// var width = window.innerWidth;
+// var height = window.innerHeight;
 
 var faceMode = affdex.FaceDetectorMode.SMALL_FACES;
 //Construct a CameraDetector and specify the image width / height and face detector mode.
 var detector = new affdex.CameraDetector(divRoot, width, height, faceMode);
+
+$(window).resize(function() {
+  console.log("onResize");
+  width = window.innerWidth;
+  height = width/1.333333333;
+  // document.querySelector("#face_video")?.setAttribute("width", width)
+  // document.querySelector("#face_video")?.setAttribute("height", height)
+  document.querySelector("#affdex_elements").setAttribute("width", width)
+  document.querySelector("#affdex_elements").setAttribute("height", height)
+  document.querySelector("#face_dots").setAttribute("width", width)
+  document.querySelector("#face_dots").setAttribute("height", height)
+  // detector = new affdex.CameraDetector(divRoot, width, height, faceMode);
+})
 
 //Enable detection of all Expressions, Emotions and Emojis classifiers.
 // detector.detectAllEmotions();
@@ -131,54 +142,26 @@ detector.addEventListener("onStopSuccess", function() {
   $("#results").html("");
 });
 
-//Add a callback to receive the results from processing an image.
-//The faces object contains the list of the faces detected in an image.
-//Faces object contains probabilities for all the different expressions, emotions and appearance metrics
-// detector.addEventListener("onImageResultsSuccess", function(faces, image, timestamp) {
-//   $('#results').html("");
-//   log('#results', "Timestamp: " + timestamp.toFixed(2));
-//   log('#results', "Number of faces found: " + faces.length);
-//   if (faces.length > 0) {
-//     log('#results', "Appearance: " + JSON.stringify(faces[0].appearance));
-//     log('#results', "Emotions: " + JSON.stringify(faces[0].emotions, function(key, val) {
-//       return val.toFixed ? Number(val.toFixed(0)) : val;
-//     }));
-//     log('#results', "Expressions: " + JSON.stringify(faces[0].expressions, function(key, val) {
-//       return val.toFixed ? Number(val.toFixed(0)) : val;
-//     }));
-//     log('#results', "Emoji: " + faces[0].emojis.dominantEmoji);
-//     drawFeaturePoints(image, faces[0].featurePoints);
-//   }
-// });
-
 detector.addEventListener("onImageResultsSuccess", function(faces, image, timestamp) {
+  // Render loop
   $('#results').html("");
   if (faces.length > 0) {
     $('#gender').html(JSON.stringify(faces[0].appearance.gender));
-    drawFeaturePoints($('#face_dots')[0], faces, image, faces[0].featurePoints);
+    drawFeaturePoints(faces, image, faces[0].featurePoints)
   }
 });
 
 //Draw the detected facial feature points on the image
-function drawFeaturePoints(el, faces, img, featurePoints) {
+function drawFeaturePoints(faces, img, featurePoints) {
   const PointSettings = {
     size: 3,
     fill: '#FFF'
   }
 
-  var contxt = el.getContext('2d');
   contxt.clearRect(0,0, width, height);
-  // contxt.fillStyle="transparent";
-  // contxt.fillRect(0, 0, contxt.canvas.width, contxt.canvas.height);
-
-  var hRatio = contxt.canvas.width / img.width;
-  var vRatio = contxt.canvas.height / img.height;
-  var ratio = Math.min(hRatio, vRatio);
-
-
-
+  contxt.fillStyle="transparent";
+  contxt.fillRect(0, 0, width, height);
   contxt.lineWidth=1;
-
   var race = "RACE: " + faces[0].appearance.ethnicity;
   var age = "AGE: " + faces[0].appearance.age;
   var sex = "SEX: " + faces[0].appearance.gender;
@@ -186,14 +169,10 @@ function drawFeaturePoints(el, faces, img, featurePoints) {
   var arr = [race, age, sex];
 
   var longest = arr.reduce(function (a, b) { return a.length > b.length ? a : b; });
-  // console.log(longest.length);
-
-// background
-
 
   if (notPaused) {
     contxt.fillStyle="rgba(105,176,219,0.40)";
-    contxt.fillRect(featurePoints[0].x-40,featurePoints[0].y+10, -(longest.length*11), -70);
+    contxt.fillRect(Math.round(featurePoints[0].x-40), Math.round(featurePoints[0].y+10), -(longest.length*11), -70);
 
     // text
     contxt.font="16px Menlo";
@@ -201,15 +180,15 @@ function drawFeaturePoints(el, faces, img, featurePoints) {
     contxt.strokeStyle = "#FFF";
     contxt.fillStyle = "#FFF";
 
-    contxt.fillText(sex.toUpperCase(), featurePoints[0].x-50, featurePoints[0].y);
-    contxt.fillText(age.toUpperCase(), featurePoints[0].x-50, featurePoints[0].y-20);
-    contxt.fillText(race.toUpperCase(), featurePoints[0].x-50, featurePoints[0].y-40);
+    contxt.fillText(sex.toUpperCase(), Math.round(featurePoints[0].x-50), Math.round(featurePoints[0].y));
+    contxt.fillText(age.toUpperCase(), Math.round(featurePoints[0].x-50), Math.round(featurePoints[0].y-20));
+    contxt.fillText(race.toUpperCase(), Math.round(featurePoints[0].x-50), Math.round(featurePoints[0].y-40));
 
     // points
       contxt.fillStyle = "#FFFFFF";
       for (var id in featurePoints) {
-        contxt.fillRect(featurePoints[id].x,
-          featurePoints[id].y, PointSettings.size, PointSettings.size);
+        contxt.fillRect(Math.round(featurePoints[id].x),
+        Math.round(featurePoints[id].y), PointSettings.size, PointSettings.size);
 
       }
     } else {
@@ -218,43 +197,4 @@ function drawFeaturePoints(el, faces, img, featurePoints) {
     }
 
   }
-
-
-  // contxt.beginPath();
-  // contxt.arc(featurePoints[15].x-60, featurePoints[15].y, 300, 0, 300 * Math.PI);
-  // contxt.lineWidth = 2;
-  // contxt.stroke();
-
-
-// //Draw the detected facial feature points on the image
-// function drawFeaturePoints(featurePoints) {
-//   $('#box').css('top', featurePoints[0].y - 120);
-//   $('#box').css('left', featurePoints[0].x - 200);
-//
-//
-//   if ($('#face_dots').hasClass('dots')) {
-//     var dot = document.getElementsByClassName('dot');
-//     for (var id in featurePoints) {
-//       dot[id].style.left = featurePoints[id].x + 'px';
-//       dot[id].style.top = featurePoints[id].y + 'px';
-//     }
-//   } else {
-//     console.log('false');
-//     $('#face_dots').addClass('dots');
-//
-//     for (var id in featurePoints) {
-//       var div = document.createElement("div");
-//       div.setAttribute("class", "dot");
-//       div.setAttribute("id", "dot"+id);
-//       document.getElementById("face_dots").appendChild(div);
-//
-//       div.style.position = "fixed";
-//       div.style.left = featurePoints[id].x+'px';
-//       div.style.top = featurePoints[id].y+'px';
-//     }
-//   }
-// }
-
-
-
 })
