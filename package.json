@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "build:universal": "electron-builder --universal"
+    "build:universal": "npx electron-builder --universal"
   },
   "dependencies": {
     "electron-serve": "^1.1.0",
