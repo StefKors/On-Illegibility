@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Upload build artifacts
-          path: dist
+          path: dist/mac-universal/On-Illegibility.app
           retention-days: 5
   release:
     runs-on: ubuntu-latest
