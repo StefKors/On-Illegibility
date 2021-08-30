@@ -18,9 +18,6 @@
     "electron-reloader": "^1.2.1"
   },
   "build": {
-    "GithubOptions": {
-      "releaseType": "release"
-    },
     "appId": "com.stefkors.on-illegibility",
     "mac": {
       "target": [
