@@ -13,6 +13,9 @@ let mainWindow;
     icon: path.join(__dirname, "./icon.icns"),
   });
 
+  // mainWindow.setAspectRatio(1.7777778, {width: 1280, height: 960})
+  mainWindow.webContents.openDevTools()
+
   await loadURL(mainWindow);
 
   try {

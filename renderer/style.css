@@ -43,7 +43,14 @@ body {
 }
 
 #face_video_canvas {
-  margin-left: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block; 
+  width: 100vw;
+  aspect-ratio: 4 / 3;
+  /* border: 2px solid green; */
+  /* margin-left: auto;
   margin-right: auto;
   width: 100vw;
   position: absolute;
@@ -51,7 +58,7 @@ body {
   bottom: -9999px;
   left: -9999px;
   right: -9999px;
-  margin: auto;
+  margin: auto; */
   /* -moz-transform: scale(-1, 1);
   -webkit-transform: scale(-1, 1);
   -o-transform: scale(-1, 1);
@@ -59,6 +66,24 @@ body {
   transform: scale(-1, 1); */
 }
 
+/* #face_dots {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+} */
+
+
+#face_dots {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block; 
+  width: 100vw;
+  aspect-ratio: 4 / 3;
+  /* border: 2px solid red; */
+}
 
 #canvas {
   margin-left: auto;
@@ -151,13 +176,4 @@ button {
   color: white;
   border: 0;
   font-family: 'Menlo';
-}
-
-#face_dots {
-  position: absolute;
-  top: 0;
-  /* width: 1280px;
-  height: 960px; 
-  display: block; */
-  border: 2px solid;
 }
