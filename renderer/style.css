@@ -169,11 +169,20 @@ body {
   transition: .2s;
 }
 
-button {
+button,
+#recording_status {
   padding: 10px;
   font-size: 16px;
   background-color: rgba(105,176,219,0.40);
   color: white;
   border: 0;
   font-family: 'Menlo';
+}
+
+#recording_status {
+  background-color: rgba(219, 113, 105, 0.4);
+}
+
+button:hover {
+  background-color: rgba(105,176,219,0.80);
 }
