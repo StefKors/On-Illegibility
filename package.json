@@ -1,6 +1,6 @@
 {
   "name": "On-Illegibility",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "main.js",
   "license": "MIT",
   "preinstall": "electron-builder install-app-deps",
@@ -18,22 +18,22 @@
     "electron-reloader": "^1.2.1"
   },
   "build": {
-		"appId": "com.stefkors.on-illegibility",
-		"mac": {
-			"target": [
-				"dmg"
-			],
-			"category": "public.app-category.lifestyle",
-			"darkModeSupport": true,
-			"entitlements": "./build/entitlements.mac.plist",
-			"entitlementsInherit": "./build/entitlements.mac.plist",
-			"hardenedRuntime": false
-		},
-		"linux": {
-			"category": "Utility"
-		},
-		"dmg": {
-			"icon": false
-		}
-	}
+    "appId": "com.stefkors.on-illegibility",
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.lifestyle",
+      "darkModeSupport": true,
+      "entitlements": "./build/entitlements.mac.plist",
+      "entitlementsInherit": "./build/entitlements.mac.plist",
+      "hardenedRuntime": false
+    },
+    "linux": {
+      "category": "Utility"
+    },
+    "dmg": {
+      "icon": false
+    }
+  }
 }
