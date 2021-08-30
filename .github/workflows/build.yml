@@ -1,10 +1,10 @@
 name: CI
 
-on: push
-  # push:
-  #   branches:
-  #     - main
-  #     - master
+on:
+  push:
+    branches:
+      - main
+      - master
 
 jobs:
 
