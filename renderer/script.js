@@ -1,8 +1,47 @@
-$(window).resize(function () {
-  // location.reload();
-});
+EasingFunctions = {
+  linear: function(t) {
+    return t;
+  },
+  easeInQuad: function(t) {
+    return t * t;
+  },
+  easeOutQuad: function(t) {
+    return t * (2 - t);
+  },
+  easeInOutQuad: function(t) {
+    return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  },
+  easeInCubic: function(t) {
+    return t * t * t;
+  },
+  easeOutCubic: function(t) {
+    return (--t) * t * t + 1;
+  },
+  easeInOutCubic: function(t) {
+    return t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+  },
+  easeInQuart: function(t) {
+    return t * t * t * t;
+  },
+  easeOutQuart: function(t) {
+    return 1 - (--t) * t * t * t;
+  },
+  easeInOutQuart: function(t) {
+    return t < .5 ? 8 * t * t * t * t : 1 - 8 * (--t) * t * t * t;
+  },
+  easeInQuint: function(t) {
+    return t * t * t * t * t;
+  },
+  easeOutQuint: function(t) {
+    return 1 + (--t) * t * t * t * t;
+  },
+  easeInOutQuint: function(t) {
+    return t < .5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t;
+  }
+}
 
-$(window).ready(function () {
+
+function init() {
   // var width = window.innerWidth;
   var width = window.innerWidth;
   var height = width / 1.333333333;
@@ -12,8 +51,7 @@ $(window).ready(function () {
   document.querySelector("#affdex_elements").setAttribute("height", height);
   document.querySelector("#face_dots").setAttribute("width", width);
   document.querySelector("#face_dots").setAttribute("height", height);
-  let el = $("#face_dots")[0];
-  let contxt = el.getContext("2d");
+
   console.log("ready");
 
   $("#start").click(function () {
@@ -39,6 +77,38 @@ $(window).ready(function () {
   $("#toggle").click(function () {
     $("#affdex_elements").toggle();
   });
+
+  //function executes when Start button is pushed.
+  function onStart() {
+    if (detector && !detector.isRunning) {
+      detector.start();
+    }
+  }
+
+  //function executes when the Stop button is pushed.
+  function onStop() {
+    if (detector && detector.isRunning) {
+      detector.removeEventListener();
+      detector.stop();
+    }
+  }
+
+  //function executes when the Reset button is pushed.
+  function onReset() {
+    if (detector && detector.isRunning) {
+      detector.reset();
+
+      $("#results").html("");
+    }
+  }
+
+  function onPause() {
+    if (detector && detector.isRunning && notPaused) {
+      notPaused = false;
+    } else {
+      notPaused = true;
+    }
+  }
 
   // SDK Needs to create video and canvas nodes in the DOM in order to function
   // Here we are adding those nodes a predefined div.
@@ -74,7 +144,6 @@ $(window).ready(function () {
 
   //Add a callback to notify when the detector is initialized and ready for runing.
   detector.addEventListener("onInitializeSuccess", function () {
-    log("#logs", "The detector reports initialized");
     //Display canvas instead of video feed because we want to draw the feature points on it
     $("#face_video_canvas").css("display", "block");
     $("#face_video").css("display", "none");
@@ -84,53 +153,13 @@ $(window).ready(function () {
     $(node_name).append("<span>" + msg + "</span><br />");
   }
 
-  //function executes when Start button is pushed.
-  function onStart() {
-    if (detector && !detector.isRunning) {
-      $("#logs").html("");
-      detector.start();
-    }
-    log("#logs", "Clicked the start button");
-  }
-
-  $(window).ready(function () {
-    onStart();
-  });
-  //function executes when the Stop button is pushed.
-  function onStop() {
-    log("#logs", "Clicked the stop button");
-    if (detector && detector.isRunning) {
-      detector.removeEventListener();
-      detector.stop();
-    }
-  }
-
-  //function executes when the Reset button is pushed.
-  function onReset() {
-    log("#logs", "Clicked the reset button");
-    if (detector && detector.isRunning) {
-      detector.reset();
-
-      $("#results").html("");
-    }
-  }
-
-  function onPause() {
-    if (detector && detector.isRunning && notPaused) {
-      notPaused = false;
-    } else {
-      notPaused = true;
-    }
-  }
-
   //Add a callback to notify when camera access is allowed
   detector.addEventListener("onWebcamConnectSuccess", function () {
-    log("#logs", "Webcam access allowed");
+    console.log("Webcam access allowed");
   });
 
   //Add a callback to notify when camera access is denied
   detector.addEventListener("onWebcamConnectFailure", function () {
-    log("#logs", "webcam denied");
     console.log("Webcam access denied");
   });
 
@@ -153,7 +182,49 @@ $(window).ready(function () {
   );
 
   //Draw the detected facial feature points on the image
+  let oldFeaturePoints = []
+  function rounded(key, coord) {
+    return Math.round(oldFeaturePoints.map(points => {
+      return Math.round(points[key][coord])
+    }).reduce(function(sum, a) { return sum + a },0)/(oldFeaturePoints.length||1))
+  }
+
+  function featurePointsDeviation() {
+    const standardDeviation = (arr, usePopulation = false) => {
+      const mean = arr.reduce((acc, val) => acc + val, 0) / arr.length;
+      return Math.sqrt(
+        arr.reduce((acc, val) => acc.concat((val - mean) ** 2), []).reduce((acc, val) => acc + val, 0) /
+          (arr.length - (usePopulation ? 0 : 1))
+      );
+    }
+
+    const pointsArrayX = Math.round(standardDeviation(oldFeaturePoints.map(points => {
+      return Math.round(points[0]["x"])
+    })))
+
+    const pointsArrayY = Math.round(standardDeviation(oldFeaturePoints.map(points => {
+      return Math.round(points[0]["y"])
+    })))
+    return pointsArrayX > pointsArrayY ? pointsArrayX : pointsArrayX
+  }
+
+
   function drawFeaturePoints(faces, img, featurePoints) {
+    // store last 5 feature points so we can average them
+    oldFeaturePoints.push(featurePoints)
+    if (oldFeaturePoints.length > 1) {
+      let deviation = featurePointsDeviation()
+      if (deviation > 6) {
+        oldFeaturePoints = [featurePoints]
+      } else if (oldFeaturePoints.length > 7) {
+        oldFeaturePoints.shift()
+      }
+    }
+
+
+    let el = $("#face_dots")[0];
+    let contxt = el.getContext("2d");
+
     const PointSettings = {
       size: 3,
       fill: "#FFF",
@@ -174,10 +245,13 @@ $(window).ready(function () {
     });
 
     if (notPaused) {
+      const x = rounded(0, "x")
+      const y = rounded(0, "y")
+
       contxt.fillStyle = "rgba(105,176,219,0.40)";
       contxt.fillRect(
-        Math.round(featurePoints[0].x - 40),
-        Math.round(featurePoints[0].y + 10),
+        x - 40,
+        y + 10,
         -(longest.length * 11),
         -70
       );
@@ -190,26 +264,28 @@ $(window).ready(function () {
 
       contxt.fillText(
         sex.toUpperCase(),
-        Math.round(featurePoints[0].x - 50),
-        Math.round(featurePoints[0].y)
+        x - 50,
+        y
       );
       contxt.fillText(
         age.toUpperCase(),
-        Math.round(featurePoints[0].x - 50),
-        Math.round(featurePoints[0].y - 20)
+        x - 50,
+        y - 20
       );
       contxt.fillText(
         race.toUpperCase(),
-        Math.round(featurePoints[0].x - 50),
-        Math.round(featurePoints[0].y - 40)
+        x - 50,
+        y - 40
       );
 
       // points
       contxt.fillStyle = "#FFFFFF";
       for (var id in featurePoints) {
+        const idX = rounded(id, "x")
+        const idY = rounded(id, "y")
         contxt.fillRect(
-          Math.round(featurePoints[id].x),
-          Math.round(featurePoints[id].y),
+          idX,
+          idY,
           PointSettings.size,
           PointSettings.size
         );
@@ -265,4 +341,15 @@ $(window).ready(function () {
     a.click();
     window.URL.revokeObjectURL(url);
   }
+
+
+  onStart()
+}
+
+$(window).resize(function () {
+  console.log("resize");
+});
+
+$(window).ready(() => {
+  init()
 });

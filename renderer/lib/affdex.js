@@ -42,7 +42,7 @@ affdex.Detector = function() {
   var self = this;
 
   //Public variables
-  self.processFPS = 30;
+  self.processFPS = 60;
   self.worker = null;
   self.staticMode = false;
   self.detectEmojis = false;
