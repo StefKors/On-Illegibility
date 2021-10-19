@@ -3,6 +3,9 @@
   "version": "2.1.3",
   "main": "main.js",
   "license": "MIT",
+  "author": "Stef Kors <stef.kors@gmail.com>",
+  "homepage": "https://github.com/StefKors/On-Illegibility",
+  "description": "On Illegibility is a lecture performance on biometric technology (eg. facial recognition), the bias built into its algorithms, and ultimately how biometrics shape definitions of what a human being is. This lecture unpacks what it means to be legible in the eyes of the state and society, and looks into strategies of camouflage, masking and ambiguity built into “illegible” bodies and faces. The performer wears a malleable mask of their own face, which is read by a facial recognition app that shows age, sex, and race data. Throughout the lecture, the performer manipulates their face until it is no longer recognizable by the app or by the audience as a human face. ",
   "preinstall": "electron-builder install-app-deps",
   "scripts": {
     "start": "electron .",
