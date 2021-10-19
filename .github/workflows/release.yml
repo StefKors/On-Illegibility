@@ -1,0 +1,12 @@
+name: Release Main
+on:
+  push:
+    branches:
+      - main
+      - master
+jobs:
+  tag:
+    uses: StefKors/On-Illegibility/.github/workflows/jobs/tag.yml@${{ github.ref }}
+  build:
+    needs: [tag]
+    uses: StefKors/On-Illegibility/.github/workflows/jobs/build.yml@${{ github.ref }}

@@ -1,0 +1,11 @@
+name: Pull Request
+on:  
+  push:
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    uses: StefKors/On-Illegibility/.github/workflows/jobs/build.yml@${{ github.ref }}
