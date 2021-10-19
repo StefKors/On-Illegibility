@@ -8,4 +8,4 @@ on:
 
 jobs:
   build:
-    uses: StefKors/On-Illegibility/.github/workflows/build.yml@${{ github.sha }}
+    uses: ${{ format('StefKors/On-Illegibility/.github/workflows/build.yml@', {github.sha}) }}
