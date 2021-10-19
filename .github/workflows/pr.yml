@@ -8,4 +8,4 @@ on:
 
 jobs:
   build:
-    uses: StefKors/On-Illegibility/.github/workflows/jobs/build.yml@${{ github.ref }}
+    uses: StefKors/On-Illegibility/.github/workflows/build.yml@${{ github.ref }}
