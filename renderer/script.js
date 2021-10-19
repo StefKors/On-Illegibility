@@ -1,34 +1,26 @@
 function init() {
-  // var width = window.innerWidth;
+  console.log("init");
   var width = window.innerWidth;
   var height = width / 1.333333333;
-  // document.querySelector("#face_video")?.setAttribute("width", width)
-  // document.querySelector("#face_video")?.setAttribute("height", height)
   document.querySelector("#affdex_elements").setAttribute("width", width);
   document.querySelector("#affdex_elements").setAttribute("height", height);
   document.querySelector("#face_dots").setAttribute("width", width);
   document.querySelector("#face_dots").setAttribute("height", height);
 
-  console.log("ready");
-
   $("#start").click(function () {
     onStart();
-    console.log("click");
   });
 
   $("#stop").click(function () {
     onStop();
-    console.log("click");
   });
 
   $("#reset").click(function () {
     onReset();
-    console.log("click");
   });
 
   $("#pause").click(function () {
     onPause();
-    console.log("click");
   });
 
   $("#toggle").click(function () {
@@ -54,8 +46,6 @@ function init() {
   function onReset() {
     if (detector && detector.isRunning) {
       detector.reset();
-
-      $("#results").html("");
     }
   }
 
@@ -70,11 +60,7 @@ function init() {
   // SDK Needs to create video and canvas nodes in the DOM in order to function
   // Here we are adding those nodes a predefined div.
   var divRoot = document.querySelector("#affdex_elements");
-  // var width = 640;
-  // var height = 480;
   var notPaused = true;
-  // var width = window.innerWidth;
-  // var height = window.innerHeight;
 
   var faceMode = affdex.FaceDetectorMode.SMALL_FACES;
   //Construct a CameraDetector and specify the image width / height and face detector mode.
@@ -84,53 +70,34 @@ function init() {
     console.log("onResize");
     width = window.innerWidth;
     height = width / 1.333333333;
-    // document.querySelector("#face_video")?.setAttribute("width", width)
-    // document.querySelector("#face_video")?.setAttribute("height", height)
     document.querySelector("#affdex_elements").setAttribute("width", width);
     document.querySelector("#affdex_elements").setAttribute("height", height);
     document.querySelector("#face_dots").setAttribute("width", width);
     document.querySelector("#face_dots").setAttribute("height", height);
-    // detector = new affdex.CameraDetector(divRoot, width, height, faceMode);
+    detector = new affdex.CameraDetector(divRoot, width, height, faceMode);
   });
 
-  //Enable detection of all Expressions, Emotions and Emojis classifiers.
+  // Enable detection only of Appearance classifiers.
   // detector.detectAllEmotions();
   // detector.detectAllExpressions();
   // detector.detectAllEmojis();
   detector.detectAllAppearance();
 
   //Add a callback to notify when the detector is initialized and ready for runing.
-  detector.addEventListener("onInitializeSuccess", function () {
-    //Display canvas instead of video feed because we want to draw the feature points on it
-    $("#face_video_canvas").css("display", "block");
-    $("#face_video").css("display", "none");
-  });
-
-  function log(node_name, msg) {
-    $(node_name).append("<span>" + msg + "</span><br />");
-  }
-
+  detector.addEventListener("onInitializeSuccess", function () {});
   //Add a callback to notify when camera access is allowed
-  detector.addEventListener("onWebcamConnectSuccess", function () {
-    console.log("Webcam access allowed");
-  });
-
+  detector.addEventListener("onWebcamConnectSuccess", function () {});
   //Add a callback to notify when camera access is denied
   detector.addEventListener("onWebcamConnectFailure", function () {
-    console.log("Webcam access denied");
+    alert("Webcam access denied, please allow webcam access for the program to run");
   });
-
   //Add a callback to notify when detector is stopped
-  detector.addEventListener("onStopSuccess", function () {
-    log("#logs", "The detector reports stopped");
-    $("#results").html("");
-  });
+  detector.addEventListener("onStopSuccess", function () {});
 
   detector.addEventListener(
     "onImageResultsSuccess",
     function (faces, image, timestamp) {
       // Render loop
-      $("#results").html("");
       if (faces.length > 0) {
         $("#gender").html(JSON.stringify(faces[0].appearance.gender));
         drawFeaturePoints(faces, image, faces[0].featurePoints);
@@ -262,14 +229,12 @@ function init() {
   mediaRecorder = new MediaRecorder(stream, options);
 
   $("#recording_start").click(function () {
-    console.log("click");
     mediaRecorder.start();
     $("#recording_status").html("recording")
   });
 
   $("#recording_stop").click(function () {
     mediaRecorder.stop();
-    console.log("click");
     $("#recording_status").html("stopped")
   });
 
@@ -302,10 +267,6 @@ function init() {
 
   onStart()
 }
-
-$(window).resize(function () {
-  console.log("resize");
-});
 
 $(window).ready(() => {
   init()
