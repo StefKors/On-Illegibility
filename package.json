@@ -10,12 +10,12 @@
     "build:universal": "npx electron-builder --universal"
   },
   "devDependencies": {
-    "electron": "^13.2.2",
+    "electron": "^13.3.0",
     "electron-builder": "^22.11.7"
   },
   "dependencies": {
-    "electron-serve": "^1.1.0",
-    "electron-reloader": "^1.2.1"
+    "electron-reloader": "^1.2.1",
+    "electron-serve": "^1.1.0"
   },
   "build": {
     "appId": "com.stefkors.on-illegibility",
