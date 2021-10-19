@@ -42,7 +42,7 @@ affdex.Detector = function() {
   var self = this;
 
   //Public variables
-  self.processFPS = 30;
+  self.processFPS = 60;
   self.worker = null;
   self.staticMode = false;
   self.detectEmojis = false;
@@ -251,8 +251,8 @@ affdex.CameraDetector = function(element, imgW, imgH, faceMode) {
     self.videoElement = document.createElement("video");
     self.videoElement.id = "face_video";
     self.videoElement.autoplay = true;
-    // self.videoElement.width = width;
-    // self.videoElement.height = height;
+    self.videoElement.width = width;
+    self.videoElement.height = height;
     docElement.appendChild(self.videoElement);
     startTimeStamp = (new Date()).getTime() / 1000;
     canvasElement = document.createElement("canvas");
