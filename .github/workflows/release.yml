@@ -6,7 +6,7 @@ on:
       - master
 jobs:
   tag:
-    uses: StefKors/On-Illegibility/.github/workflows/tag.yml@${{ github.ref }}
+    uses: StefKors/On-Illegibility/.github/workflows/tag.yml
   build:
     needs: [tag]
-    uses: StefKors/On-Illegibility/.github/workflows/build.yml@${{ github.ref }}
+    uses: StefKors/On-Illegibility/.github/workflows/build.yml
