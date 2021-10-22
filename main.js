@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, screen } = require("electron");
 const serve = require("electron-serve");
 const path = require("path");
 
@@ -13,7 +13,8 @@ let mainWindow;
     icon: path.join(__dirname, "./icon.icns"),
   });
 
-  // mainWindow.setAspectRatio(1.7777778, {width: 1280, height: 960})
+  // Start window maximized
+  mainWindow.maximize()
   // mainWindow.webContents.openDevTools()
 
   await loadURL(mainWindow);
