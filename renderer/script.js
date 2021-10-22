@@ -71,9 +71,13 @@ function init() {
     "onImageResultsSuccess",
     function (faces, image, timestamp) {
       // Render loop
+      let el = $("#face_dots")[0];
+      let contxt = el.getContext("2d");
       if (faces.length > 0) {
         $("#gender").html(JSON.stringify(faces[0].appearance.gender));
-        drawFeaturePoints(faces, image, faces[0].featurePoints);
+        drawFeaturePoints(faces, image, faces[0].featurePoints, contxt);
+      } else {
+        contxt.clearRect(0, 0, width, height);
       }
     }
   );
@@ -106,7 +110,7 @@ function init() {
   }
 
 
-  function drawFeaturePoints(faces, img, featurePoints) {
+  function drawFeaturePoints(faces, img, featurePoints, contxt) {
     // store last 5 feature points so we can average them
     oldFeaturePoints.push(featurePoints)
     if (oldFeaturePoints.length > 1) {
@@ -118,10 +122,7 @@ function init() {
       }
     }
 
-
     let el = $("#face_dots")[0];
-    let contxt = el.getContext("2d");
-
     const scale = 1;
     const pixelRatio = window.devicePixelRatio || 1;
     el.width = scale * width * pixelRatio;
@@ -161,7 +162,7 @@ function init() {
       contxt.fillStyle = "rgba(105,176,219,0.40)";
       contxt.fillRect(
         x - 40,
-        y + 10,
+        y + (10 * pixelRatio),
         -((longest.length * 11) * pixelRatio),
         -(70* pixelRatio)
       );
