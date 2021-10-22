@@ -2,25 +2,9 @@ function init() {
   console.log("init");
   var width = window.innerWidth;
   var height = width / 1.333333333;
-  document.querySelector("#affdex_elements").setAttribute("width", width);
-  document.querySelector("#affdex_elements").setAttribute("height", height);
-  document.querySelector("#face_dots").setAttribute("width", width);
-  document.querySelector("#face_dots").setAttribute("height", height);
 
-  $("#start").click(function () {
-    onStart();
-  });
-
-  $("#stop").click(function () {
-    onStop();
-  });
-
-  $("#reset").click(function () {
-    onReset();
-  });
-
-  $("#pause").click(function () {
-    onPause();
+  $("#refresh").click(function () {
+    window.location.reload()
   });
 
   $("#toggle").click(function () {
@@ -65,17 +49,6 @@ function init() {
   var faceMode = affdex.FaceDetectorMode.SMALL_FACES;
   //Construct a CameraDetector and specify the image width / height and face detector mode.
   var detector = new affdex.CameraDetector(divRoot, width, height, faceMode);
-
-  $(window).resize(function () {
-    console.log("onResize");
-    width = window.innerWidth;
-    height = width / 1.333333333;
-    document.querySelector("#affdex_elements").setAttribute("width", width);
-    document.querySelector("#affdex_elements").setAttribute("height", height);
-    document.querySelector("#face_dots").setAttribute("width", width);
-    document.querySelector("#face_dots").setAttribute("height", height);
-    detector = new affdex.CameraDetector(divRoot, width, height, faceMode);
-  });
 
   // Enable detection only of Appearance classifiers.
   // detector.detectAllEmotions();
@@ -149,8 +122,21 @@ function init() {
     let el = $("#face_dots")[0];
     let contxt = el.getContext("2d");
 
+    const scale = 1;
+    const pixelRatio = window.devicePixelRatio || 1;
+    el.width = scale * width * pixelRatio;
+    el.height = scale * height * pixelRatio;
+
+    el.style.width = `${scale * width}px`;
+    el.style.height = `${scale * height}px`;
+
+    contxt.mozImageSmoothingEnabled = false;
+    contxt.imageSmoothingEnabled = false;
+
+    contxt.scale(scale * pixelRatio, scale * pixelRatio);
+
     const PointSettings = {
-      size: 3,
+      size: 3 * pixelRatio,
       fill: "#FFF",
     };
 
@@ -176,12 +162,12 @@ function init() {
       contxt.fillRect(
         x - 40,
         y + 10,
-        -(longest.length * 11),
-        -70
+        -((longest.length * 11) * pixelRatio),
+        -(70* pixelRatio)
       );
 
       // text
-      contxt.font = "16px Menlo";
+      contxt.font = `${16 * pixelRatio}px Menlo`;
       contxt.textAlign = "right";
       contxt.strokeStyle = "#FFF";
       contxt.fillStyle = "#FFF";
@@ -194,12 +180,12 @@ function init() {
       contxt.fillText(
         age.toUpperCase(),
         x - 50,
-        y - 20
+        y - (20 * pixelRatio)
       );
       contxt.fillText(
         race.toUpperCase(),
         x - 50,
-        y - 40
+        y - (40 * pixelRatio)
       );
 
       // points
@@ -269,5 +255,25 @@ function init() {
 }
 
 $(window).ready(() => {
-  init()
+  $("#enable").click(() => {
+    document.querySelector("body").innerHTML = `
+    <div class="container-fluid">
+    <div class="row">
+      <div id="affdex_elements" class="video"></div>
+      <canvas id="face_dots" style="display: block;"></canvas>
+    </div>
+
+
+    <div class="controls">
+      <button id="recording_start">Start Recording</button>
+      <button id="recording_stop">Stop Recording</button>
+      <span id="recording_status">Ready to Record</span>
+      <br>
+      <button id="refresh">Refresh</button>
+      <button id="toggle">Toggle video</button>
+    </div>
+  </div>
+  `
+    init()
+  })
 });
