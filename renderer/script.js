@@ -1,4 +1,5 @@
 var uiscale = localStorage.getItem('uiscale::on-illegibility') ?? 1
+var devices = []
 function init() {
   console.log("init");
   var width = window.innerWidth;
@@ -288,3 +289,12 @@ $(window).ready(() => {
     init()
   })
 });
+
+
+function listDevices() {
+  window.navigator.mediaDevices.enumerateDevices().then((results) => {
+    devices = results.filter((device) => {
+      return device.kind != "videoinput"
+    })
+  })
+}
