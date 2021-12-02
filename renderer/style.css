@@ -108,7 +108,7 @@ body {
 }
 
 .controls {
-  opacity: 1;
+  opacity: 0;
   transition: .2s;
   display: grid;
   grid-template-columns: 1fr;
