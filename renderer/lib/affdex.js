@@ -287,7 +287,8 @@ affdex.CameraDetector = function(element, imgW, imgH, faceMode) {
   };
 
   self.onWebcamReady = function(stream) {
-      cameraStream = stream;
+    cameraStream = stream;
+    console.log(cameraStream);
       self.videoElement.addEventListener("canplay", function() {
       self.videoElement.play();
     });
@@ -325,19 +326,16 @@ affdex.CameraDetector = function(element, imgW, imgH, faceMode) {
     }
   };
 
-  self._startCamera = function() {
-    window.navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: false
-    }).then(self.onWebcamReady).catch(self.getCallback("onWebcamConnect", false));
+  self._startCamera = function(options) {
+    window.navigator.mediaDevices.getUserMedia(options).then(self.onWebcamReady).catch(self.getCallback("onWebcamConnect", false));
   };
 
-  self.start = function() {
+  self.start = function(options) {
     if(!self.isRunning) {
       ctor();
       var url = affdex.getAffdexDotJsLocation() + adapterJSVersion;
       require(docElement, url, function() {
-        self._startCamera();
+        self._startCamera(options);
       },
       function() {
         self.getCallback("onInitialize", false)("Unable to load adaptor.js to load the camera");

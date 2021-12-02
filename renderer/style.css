@@ -153,6 +153,15 @@ input {
   font-family: 'Menlo';
 }
 
+.camera-options button {
+  text-align: center;
+  padding: 10px;
+  background-color: rgba(105,176,219,0.40);
+  color: white;
+  font-family: 'Menlo';
+  margin: 10px 0;
+}
+
 .uiscale-block:hover,
 button:hover {
   background-color: rgba(105,176,219,0.80);
