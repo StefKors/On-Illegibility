@@ -108,8 +108,11 @@ body {
 }
 
 .controls {
-  opacity: 0;
+  opacity: 1;
   transition: .2s;
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 10px;
 }
 
 .controls:hover {
@@ -127,10 +130,30 @@ button,
   font-family: 'Menlo';
 }
 
+button {
+  cursor: pointer;
+}
+
 #recording_status {
   background-color: rgba(219, 113, 105, 0.4);
 }
 
+
+input {
+  cursor: pointer;
+}
+
+.uiscale-block {
+  display: grid;
+  grid-template-columns: 1fr;
+  text-align: center;
+  padding: 10px;
+  background-color: rgba(105,176,219,0.40);
+  color: white;
+  font-family: 'Menlo';
+}
+
+.uiscale-block:hover,
 button:hover {
   background-color: rgba(105,176,219,0.80);
 }

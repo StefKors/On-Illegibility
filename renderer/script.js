@@ -1,7 +1,14 @@
+var uiscale = localStorage.getItem('uiscale::on-illegibility') ?? 1
 function init() {
   console.log("init");
   var width = window.innerWidth;
   var height = width / 1.333333333;
+
+  $("#uiscale").on('input', function () {
+    uiscale = $(this).val()
+    localStorage.setItem('uiscale::on-illegibility', uiscale)
+    console.log(uiscale);
+  })
 
   $("#refresh").click(function () {
     window.location.reload()
@@ -137,14 +144,14 @@ function init() {
     contxt.scale(scale * pixelRatio, scale * pixelRatio);
 
     const PointSettings = {
-      size: 3 * pixelRatio,
+      size: 3 * pixelRatio * uiscale,
       fill: "#FFF",
     };
 
-    contxt.clearRect(0, 0, width, height);
+    contxt.clearRect(0, 0, width * uiscale, height * uiscale);
     contxt.fillStyle = "transparent";
-    contxt.fillRect(0, 0, width, height);
-    contxt.lineWidth = 1;
+    contxt.fillRect(0, 0, width * uiscale, height * uiscale);
+    contxt.lineWidth = 1 * uiscale;
     var race = "RACE: " + faces[0].appearance.ethnicity;
     var age = "AGE: " + faces[0].appearance.age;
     var sex = "SEX: " + faces[0].appearance.gender;
@@ -162,13 +169,13 @@ function init() {
       contxt.fillStyle = "rgba(105,176,219,0.40)";
       contxt.fillRect(
         x - 40,
-        y + (10 * pixelRatio),
-        -((longest.length * 11) * pixelRatio),
-        -(70* pixelRatio)
+        y + (10 * pixelRatio * uiscale),
+        -((longest.length * 11) * pixelRatio) * uiscale,
+        -(70* pixelRatio) * uiscale,
       );
 
       // text
-      contxt.font = `${16 * pixelRatio}px Menlo`;
+      contxt.font = `${16 * pixelRatio * uiscale}px Menlo`;
       contxt.textAlign = "right";
       contxt.strokeStyle = "#FFF";
       contxt.fillStyle = "#FFF";
@@ -181,12 +188,12 @@ function init() {
       contxt.fillText(
         age.toUpperCase(),
         x - 50,
-        y - (20 * pixelRatio)
+        y - (20 * pixelRatio * uiscale)
       );
       contxt.fillText(
         race.toUpperCase(),
         x - 50,
-        y - (40 * pixelRatio)
+        y - (40 * pixelRatio * uiscale)
       );
 
       // points
@@ -256,6 +263,7 @@ function init() {
 }
 
 $(window).ready(() => {
+  const rangescale = uiscale
   $("#enable").click(() => {
     document.querySelector("body").innerHTML = `
     <div class="container-fluid">
@@ -264,12 +272,14 @@ $(window).ready(() => {
       <canvas id="face_dots" style="display: block;"></canvas>
     </div>
 
-
     <div class="controls">
+      <div class="uiscale-block">
+        <label>Scaling</label>
+        <input type="range" id="uiscale" name="uiscale" min="0.3" max="2" value="${rangescale}" step="0.1">
+      </div>
+      <span id="recording_status">Ready to Record</span>
       <button id="recording_start">Start Recording</button>
       <button id="recording_stop">Stop Recording</button>
-      <span id="recording_status">Ready to Record</span>
-      <br>
       <button id="refresh">Refresh</button>
       <button id="toggle">Toggle video</button>
     </div>
