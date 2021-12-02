@@ -1,7 +1,31 @@
 var uiscale = localStorage.getItem('uiscale::on-illegibility') ?? 1
 var devices = []
+var cameraOptions = {
+  video: true
+}
 function init() {
   console.log("init");
+  document.querySelector("body").innerHTML = `
+  <div class="container-fluid">
+  <div class="row">
+    <div id="affdex_elements" class="video"></div>
+    <canvas id="face_dots" style="display: block;"></canvas>
+  </div>
+
+  <div class="controls">
+    <div class="uiscale-block">
+      <label>Scaling</label>
+      <input type="range" id="uiscale" name="uiscale" min="0.3" max="2" value="${uiscale}" step="0.1">
+    </div>
+    <span id="recording_status">Ready to Record</span>
+    <button id="recording_start">Start Recording</button>
+    <button id="recording_stop">Stop Recording</button>
+    <button id="refresh">Refresh</button>
+    <button id="toggle">Toggle video</button>
+  </div>
+</div>
+`
+
   var width = window.innerWidth;
   var height = width / 1.333333333;
 
@@ -22,7 +46,8 @@ function init() {
   //function executes when Start button is pushed.
   function onStart() {
     if (detector && !detector.isRunning) {
-      detector.start();
+      detector.start(cameraOptions);
+      listDevices()
     }
   }
 
@@ -263,38 +288,29 @@ function init() {
   onStart()
 }
 
-$(window).ready(() => {
-  const rangescale = uiscale
-  $("#enable").click(() => {
-    document.querySelector("body").innerHTML = `
-    <div class="container-fluid">
-    <div class="row">
-      <div id="affdex_elements" class="video"></div>
-      <canvas id="face_dots" style="display: block;"></canvas>
-    </div>
-
-    <div class="controls">
-      <div class="uiscale-block">
-        <label>Scaling</label>
-        <input type="range" id="uiscale" name="uiscale" min="0.3" max="2" value="${rangescale}" step="0.1">
-      </div>
-      <span id="recording_status">Ready to Record</span>
-      <button id="recording_start">Start Recording</button>
-      <button id="recording_stop">Stop Recording</button>
-      <button id="refresh">Refresh</button>
-      <button id="toggle">Toggle video</button>
-    </div>
-  </div>
-  `
-    init()
-  })
-});
-
 
 function listDevices() {
   window.navigator.mediaDevices.enumerateDevices().then((results) => {
+    $(".camera-options").innerHTML = ""
     devices = results.filter((device) => {
-      return device.kind != "videoinput"
+      return device.kind == "videoinput"
+    })
+
+    devices.forEach((device) => {
+      $(".camera-options").append(`
+          <button class="camera-select" data-id="${device.deviceId}">${device.label}</button>
+      `)
+    })
+    
+    $(".camera-select").click(function () {
+      let id = $(this).data("id")
+      cameraOptions.video = { deviceId: id }
+      init()
     })
   })
 }
+
+
+$(window).ready(() => {
+  listDevices()
+});
