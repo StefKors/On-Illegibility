@@ -13,7 +13,7 @@
     "build:universal": "npx electron-builder --universal"
   },
   "devDependencies": {
-    "electron": "^13.3.0",
+    "electron": "^13.6.6",
     "electron-builder": "^22.11.7"
   },
   "dependencies": {
